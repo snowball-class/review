@@ -48,7 +48,7 @@ public class ReviewService {
     }
 
     @Transactional // memberId 검증이 필요한가?
-    public Long updateReview(ReviewUpdateRequest reviewUpdateRequest, Long reviewId, String accessToken) {
+    public Long updateReview(ReviewUpdateRequest reviewUpdateRequest, Long reviewId) {
 
         Review review = reviewRepository.findByReviewId(reviewId)
                 .orElseThrow(() -> new GlobalExceptionHandler.ReviewNotFoundException());
@@ -60,7 +60,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public ReviewDeleteResponse deleteReview(Long reviewId, String accessToken) {
+    public ReviewDeleteResponse deleteReview(Long reviewId) {
         if(!reviewRepository.existsById(reviewId)){
             return new ReviewDeleteResponse(false);
         }

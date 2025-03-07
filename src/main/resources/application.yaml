@@ -3,22 +3,22 @@ server:
 
 spring:
   application:
-    name: review # 다솔님 설정
+    name:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name:
     url:
     username:
     password:
   jpa:
-    database: mysql
+    database:
     hibernate:
       ddl-auto: none
     show-sql: true # 다솔님 설정
     properties:
       hibernate.format_sql: true
-      dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+      dialect:
   jwt: # jwt secretkey 남주
-    secret: tmvmfldtlzbflxlfhrmdlsrnguswndspringsecuritylogincodeimplementmakingsecretkey # 남주님 설정
+    secret:  # 남주님 설정
 
 # swagger 관련 설정
 springdoc:

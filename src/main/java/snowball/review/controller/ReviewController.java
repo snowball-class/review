@@ -50,17 +50,15 @@ public class ReviewController {
     @Operation(summary = "리뷰 수정")
     @PutMapping("/{lessonId}/reviews/{reviews}")
     public ApiResponse<Long> updateReview(@RequestBody ReviewUpdateRequest reviewUpdateRequest,
-                                          @PathVariable Long reviewId,
-                                          @RequestHeader("Authorization") String accessToken) {
-        return ApiResponse.success(reviewService.updateReview(reviewUpdateRequest, reviewId, accessToken));
+                                          @PathVariable Long reviewId) {
+        return ApiResponse.success(reviewService.updateReview(reviewUpdateRequest, reviewId));
     }
 
 
     // review delete(D)
     @Operation(summary = "리뷰 삭제")
     @DeleteMapping("/{lessonId}/reviews/{reviews}")
-    public ApiResponse<ReviewDeleteResponse> deleteReview(@PathVariable Long reviewId,
-                                                          @RequestHeader("Authorization") String accessToken) {
-        return ApiResponse.success(reviewService.deleteReview(reviewId, accessToken));
+    public ApiResponse<ReviewDeleteResponse> deleteReview(@PathVariable Long reviewId) {
+        return ApiResponse.success(reviewService.deleteReview(reviewId));
     }
 }
