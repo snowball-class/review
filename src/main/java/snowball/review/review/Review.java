@@ -20,7 +20,7 @@ public class Review {
     private Long reviewId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String reviewContent;
+    private String content;
     @CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createAt;

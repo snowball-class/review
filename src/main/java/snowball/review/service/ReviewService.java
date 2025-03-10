@@ -35,12 +35,12 @@ public class ReviewService {
     public Long createReview(ReviewCreateRequest reviewCreateRequest, Long lessonId, String accessToken) {
 
         Review newReview = new Review();
-        newReview.setReviewContent(reviewCreateRequest.getReviewContent());
+        newReview.setContent(reviewCreateRequest.getContent());
         newReview.setLessonId(reviewCreateRequest.getLessonId());
         newReview.setStarScore(reviewCreateRequest.getStarScore());
 
         newReview.setLessonId(lessonId);
-        newReview.setMemberUUID(tokenParser(accessToken)); //파싱해야하나?
+        newReview.setMemberUUID(tokenParser(accessToken));
 
         reviewRepository.save(newReview);
 
@@ -53,7 +53,7 @@ public class ReviewService {
         Review review = reviewRepository.findByReviewId(reviewId)
                 .orElseThrow(() -> new GlobalExceptionHandler.ReviewNotFoundException());
 
-        review.setReviewContent(reviewUpdateRequest.getReviewContent());
+        review.setContent(reviewUpdateRequest.getContent());
         review.setStarScore(reviewUpdateRequest.getStarScore());
 
         return review.getReviewId();
