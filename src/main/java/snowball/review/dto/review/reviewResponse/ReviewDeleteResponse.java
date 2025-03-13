@@ -1,4 +1,4 @@
-package snowball.review.dto.review.reviewDeleteResponse;
+package snowball.review.dto.review.reviewResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

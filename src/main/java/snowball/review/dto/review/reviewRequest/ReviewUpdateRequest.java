@@ -1,4 +1,4 @@
-package snowball.review.dto.review.reviewUpdateRequest;
+package snowball.review.dto.review.reviewRequest;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;

@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import snowball.review.dto.ApiResponse;
-import snowball.review.dto.review.reviewCreateRequest.ReviewCreateRequest;
-import snowball.review.dto.review.reviewDeleteResponse.ReviewDeleteResponse;
-import snowball.review.dto.review.reviewUpdateRequest.ReviewUpdateRequest;
+import snowball.review.dto.review.reviewRequest.ReviewCreateRequest;
+import snowball.review.dto.review.reviewResponse.ReviewDeleteResponse;
+import snowball.review.dto.review.reviewRequest.ReviewUpdateRequest;
 import snowball.review.service.ReviewService;
 
 @Controller
@@ -27,8 +27,8 @@ public class ReviewController {
     @PostMapping("/{lessonId}/reviews")
     public ApiResponse<Long> createReview(@RequestBody ReviewCreateRequest reviewCreateRequest,
                                           @PathVariable Long lessonId,
-                                          @RequestHeader("Authorization") String accessToken) {
-        return ApiResponse.success(reviewService.createReview(reviewCreateRequest, lessonId, accessToken));
+                                          @RequestHeader("Authorization") String token) {
+        return ApiResponse.success(reviewService.createReview(reviewCreateRequest, lessonId, token));
     }
     
 

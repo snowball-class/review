@@ -1,38 +1,33 @@
 package snowball.review.service;
 
-import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import snowball.review.dto.review.reviewCreateRequest.ReviewCreateRequest;
-import snowball.review.dto.review.reviewDeleteResponse.ReviewDeleteResponse;
-import snowball.review.dto.review.reviewUpdateRequest.ReviewUpdateRequest;
+import snowball.review.client.MemberClient;
+import snowball.review.dto.ApiResponse;
+import snowball.review.dto.member.MemberInfoResponse;
+import snowball.review.dto.review.reviewRequest.ReviewCreateRequest;
+import snowball.review.dto.review.reviewResponse.ReviewDeleteResponse;
+import snowball.review.dto.review.reviewRequest.ReviewUpdateRequest;
 import snowball.review.exception.GlobalExceptionHandler;
 import snowball.review.repository.ReviewRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import snowball.review.review.Review;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
+import java.lang.reflect.Member;
 
 @Service
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final MemberClient memberClient;
 
-    // 토큰 파싱하는거.. 따로 뺄지 여기둘지 고민
-    private SecretKey secretKey; // 객체키 만듬
-
-    public ReviewService(ReviewRepository reviewRepository, @Value("${spring.jwt.secret}")String secret) {
+    public ReviewService(ReviewRepository reviewRepository, MemberClient memberClient) {
         this.reviewRepository = reviewRepository;
-        this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS512.key().build().getAlgorithm());
+        this.memberClient = memberClient;
     }
 
     @Transactional
-    public Long createReview(ReviewCreateRequest reviewCreateRequest, Long lessonId, String accessToken) {
+    public Long createReview(ReviewCreateRequest reviewCreateRequest, Long lessonId, String token) {
 
         Review newReview = new Review();
         newReview.setContent(reviewCreateRequest.getContent());
@@ -40,7 +35,9 @@ public class ReviewService {
         newReview.setStarScore(reviewCreateRequest.getStarScore());
 
         newReview.setLessonId(lessonId);
-        newReview.setMemberUUID(tokenParser(accessToken));
+
+        MemberInfoResponse response = memberClient.getMemberInfo(token).data();
+        newReview.setMemberUUID(response.getMemberUUID());
 
         reviewRepository.save(newReview);
 
@@ -67,30 +64,5 @@ public class ReviewService {
         reviewRepository.deleteByReviewId(reviewId);
         return new ReviewDeleteResponse(true);
     }
-
-
-    public UUID tokenParser(String accessToken){
-
-        if (accessToken.startsWith("Bearer ")) {
-            accessToken = accessToken.substring(7);
-        }
-
-        try {
-            Claims claims = Jwts.parser()
-                    .verifyWith(secretKey).build()
-                    .parseSignedClaims(accessToken)
-                    .getPayload();
-
-            // claims.get("memberUUID")가 String을 반환하므로, UUID.fromString()을 사용
-            UUID memberId = UUID.fromString((String) claims.getSubject());
-
-            return memberId;
-
-        } catch (JwtException | IllegalArgumentException e){
-            throw new JwtException("토큰 오류", e);
-        }
-    }
-
-
 
 }
