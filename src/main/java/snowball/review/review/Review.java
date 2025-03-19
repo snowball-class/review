@@ -29,7 +29,7 @@ public class Review {
     private Double starScore;
 
     @Column(nullable = false)
-    private Long LessonId;
+    private Long lessonId;
     @Column(nullable = false)
     private UUID memberUUID;
 

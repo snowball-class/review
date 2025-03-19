@@ -9,11 +9,13 @@ import snowball.review.dto.member.MemberInfoResponse;
 import snowball.review.dto.review.reviewRequest.ReviewCreateRequest;
 import snowball.review.dto.review.reviewResponse.ReviewDeleteResponse;
 import snowball.review.dto.review.reviewRequest.ReviewUpdateRequest;
+import snowball.review.dto.review.reviewResponse.ReviewGetResponse;
 import snowball.review.exception.GlobalExceptionHandler;
 import snowball.review.repository.ReviewRepository;
 import snowball.review.review.Review;
 
 import java.lang.reflect.Member;
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -65,4 +67,16 @@ public class ReviewService {
         return new ReviewDeleteResponse(true);
     }
 
+    @Transactional(readOnly = true)
+    public List<ReviewGetResponse> getReviewListByMemberId(String token) {
+        MemberInfoResponse response = memberClient.getMemberInfo(token).data();
+        List<ReviewGetResponse> reviews = reviewRepository.findByMemberUUID(response.getMemberUUID());
+        return reviews;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewGetResponse> getReviewListByLessonId(Long lessonId) {
+        List<ReviewGetResponse> reviews = reviewRepository.findByLessonId(lessonId);
+        return reviews;
+    }
 }

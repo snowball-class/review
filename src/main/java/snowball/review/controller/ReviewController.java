@@ -7,11 +7,14 @@ import snowball.review.dto.ApiResponse;
 import snowball.review.dto.review.reviewRequest.ReviewCreateRequest;
 import snowball.review.dto.review.reviewResponse.ReviewDeleteResponse;
 import snowball.review.dto.review.reviewRequest.ReviewUpdateRequest;
+import snowball.review.dto.review.reviewResponse.ReviewGetResponse;
 import snowball.review.service.ReviewService;
+
+import java.util.List;
 
 @Controller
 @ResponseBody
-@RequestMapping("/lessons")
+@RequestMapping
 public class ReviewController {
 //    리뷰 CRUD
 //    회원의 리뷰 조회
@@ -24,31 +27,33 @@ public class ReviewController {
 
     // review insert(C)
     @Operation(summary = "리뷰 생성")
-    @PostMapping("/{lessonId}/reviews")
+    @PostMapping("lesson/{lessonId}/review")
     public ApiResponse<Long> createReview(@RequestBody ReviewCreateRequest reviewCreateRequest,
                                           @PathVariable Long lessonId,
                                           @RequestHeader("Authorization") String token) {
         return ApiResponse.success(reviewService.createReview(reviewCreateRequest, lessonId, token));
     }
-    
 
-//    // review read(R) : 레슨 ID로 리뷰 bulk 조회
-//    @Operation(summary = "레슨 강의 ID 하나로 리뷰 벌크 조회")
-//    @GetMapping("/{lessonId}/reviews/bulk")
-//    public ApiResponse<List<reviewGetResponse>> getReviewListByLesson(@PathVariable Long lessonId) {
-//        return ApiResponse.success(reviewService.getReviewListByLesson(lessonId));
-//    }
 
-//    // review read(R) : 회원 ID로 리뷰 bulk 조회
-//    @GetMapping("/{lessonId}/reviews")
-//    public ApiResponseEntity getReviewListByMember(@RequestBody reviewCreateRequest reviewCreateRequest) {
-//        return ApiResponseEntity.success(reviewService.getReviewListByMember(reviewCreateRequest));
-//    }
-//
+    // review read(R)
+    @Operation(summary = "레슨ID 하나로 리뷰들 조회")
+    @GetMapping("/lesson/reviews/bulk")
+    public ApiResponse<List<ReviewGetResponse>> getReviewListByLessonId(@PathVariable Long lessonId) {
+        return ApiResponse.success(reviewService.getReviewListByLessonId(lessonId));
+    }
+
+
+    // review read(R)
+    @Operation(summary = "회원ID 하나로 리뷰들 조회")
+    @GetMapping("/member/reviews/bulk")
+    public ApiResponse<List<ReviewGetResponse>> getReviewListByMemberId(@RequestHeader("Authorization") String token) {
+        return ApiResponse.success(reviewService.getReviewListByMemberId(token));
+    }
+
 
     // review update(U)
     @Operation(summary = "리뷰 수정")
-    @PutMapping("/{lessonId}/reviews/{reviews}")
+    @PutMapping("lesson/{lessonId}/review/{review}")
     public ApiResponse<Long> updateReview(@RequestBody ReviewUpdateRequest reviewUpdateRequest,
                                           @PathVariable Long reviewId) {
         return ApiResponse.success(reviewService.updateReview(reviewUpdateRequest, reviewId));
@@ -57,7 +62,7 @@ public class ReviewController {
 
     // review delete(D)
     @Operation(summary = "리뷰 삭제")
-    @DeleteMapping("/{lessonId}/reviews/{reviews}")
+    @DeleteMapping("lesson/{lessonId}/review/{review}")
     public ApiResponse<ReviewDeleteResponse> deleteReview(@PathVariable Long reviewId) {
         return ApiResponse.success(reviewService.deleteReview(reviewId));
     }
