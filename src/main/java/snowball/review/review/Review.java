@@ -23,14 +23,16 @@ public class Review {
     private String content;
     @CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     @Column(nullable = false)
-    @Check(constraints = "star_rating BETWEEN 1 AND 5")
+//    @Check(constraints = "starScore BETWEEN 1 AND 5")
     private Double starScore;
 
     @Column(nullable = false)
     private Long lessonId;
     @Column(nullable = false)
     private UUID memberUUID;
+    @Column(nullable = false)
+    private String nickname;
 
 }

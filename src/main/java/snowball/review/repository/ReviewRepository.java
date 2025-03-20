@@ -1,7 +1,6 @@
 package snowball.review.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import snowball.review.dto.review.reviewResponse.ReviewGetResponse;
 import snowball.review.review.Review;
 
 import java.util.List;
@@ -13,6 +12,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findByReviewId(Long reviewId);
     void deleteByReviewId(Long reviewId);
-    List<ReviewGetResponse> findByMemberUUID(UUID memberUUID);
-    List<ReviewGetResponse> findByLessonId(Long lessonId);
+    List<Review> findByMemberUUID(UUID memberUUID);
+    boolean existsByReviewIdAndLessonId(Long reviewId, Long lessonId);
+
+    List<Review> findByLessonId(Long lessonId);
 }
