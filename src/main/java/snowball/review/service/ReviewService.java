@@ -12,6 +12,7 @@ import snowball.review.repository.ReviewRepository;
 import snowball.review.review.Review;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReviewService {
@@ -30,14 +31,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public Long createReview(ReviewCreateRequest reviewCreateRequest, Long lessonId, String token) {
+    public Long createReview(ReviewCreateRequest reviewCreateRequest, String token) {
 
         Review newReview = new Review();
         newReview.setContent(reviewCreateRequest.getContent());
         newReview.setLessonId(reviewCreateRequest.getLessonId());
         newReview.setStarScore(reviewCreateRequest.getStarScore());
-
-        newReview.setLessonId(lessonId);
 
         MemberInfoResponse response = memberClient.getMemberInfo(token).data();
         newReview.setMemberUUID(response.getMemberUUID());

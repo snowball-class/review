@@ -20,9 +20,6 @@ public class ReviewCreateRequest {
     @Schema(description = "별점", example = "1, 1.5, 2, 2.5, ..., 5")
     private Double starScore;
 
-    @Schema(description = "리뷰 작성자", example = "길동이")
-    private Double nickname;
-
     @Schema(description = "강의 고유키(Lesson ID)", example = "12")
     private Long lessonId;
 }

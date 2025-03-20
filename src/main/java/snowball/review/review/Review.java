@@ -13,6 +13,17 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_member_lesson",
+                        columnNames = {
+                                "memberUUID",
+                                "lessonId"
+                        }
+                )
+        }
+)
 public class Review {
 /* 리뷰 엔티티 */
     @Id
@@ -25,7 +36,7 @@ public class Review {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
     @Column(nullable = false)
-//    @Check(constraints = "starScore BETWEEN 1 AND 5")
+    @Check(constraints = "starScore BETWEEN 1 AND 5")
     private Double starScore;
 
     @Column(nullable = false)

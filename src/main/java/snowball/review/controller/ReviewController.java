@@ -1,6 +1,7 @@
 package snowball.review.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import snowball.review.dto.ApiResponse;
@@ -27,11 +28,10 @@ public class ReviewController {
 
     // review insert(C)
     @Operation(summary = "리뷰 생성")
-    @PostMapping("/{lessonId}")
-    public ApiResponse<Long> createReview(@RequestBody ReviewCreateRequest reviewCreateRequest,
-                                          @PathVariable("lessonId") Long lessonId,
+    @PostMapping
+    public ApiResponse<Long> createReview(@Valid @RequestBody ReviewCreateRequest reviewCreateRequest,
                                           @RequestHeader("Authorization") String token) {
-        return ApiResponse.success(reviewService.createReview(reviewCreateRequest, lessonId, token));
+        return ApiResponse.success(reviewService.createReview(reviewCreateRequest, token));
     }
 
 
