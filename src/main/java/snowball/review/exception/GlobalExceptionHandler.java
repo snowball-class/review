@@ -14,23 +14,23 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ReviewNotFoundException.class})
     public ResponseEntity<ApiResponse> handleReviewNotFoundException(ReviewNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error("해당하는 리뷰가 없습니다."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(e.getMessage()));
     }
 
     @ExceptionHandler({DuplicateReviewException.class})
     public ResponseEntity<ApiResponse> handleDuplicateReviewException(DuplicateReviewException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error("이미 해당 수업에 대한 리뷰가 존재합니다."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(e.getMessage()));
     }
 
     public static class ReviewNotFoundException extends RuntimeException{
-        public ReviewNotFoundException() {
-            super();
+        public ReviewNotFoundException(String message) {
+            super(message);
         }
     }
 
     public static class DuplicateReviewException extends RuntimeException{
-        public DuplicateReviewException(){
-            super();
+        public DuplicateReviewException(String message){
+            super(message);
         }
     }
 }
