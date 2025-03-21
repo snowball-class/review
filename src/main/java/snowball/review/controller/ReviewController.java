@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @ResponseBody
-@RequestMapping("/review")
+@RequestMapping
 public class ReviewController {
 //    리뷰 CRUD
 //    회원의 리뷰 조회
@@ -28,7 +28,7 @@ public class ReviewController {
 
     // review insert(C)
     @Operation(summary = "리뷰 생성")
-    @PostMapping
+    @PostMapping("/review")
     public ApiResponse<Long> createReview(@Valid @RequestBody ReviewCreateRequest reviewCreateRequest,
                                           @RequestHeader("Authorization") String token) {
         return ApiResponse.success(reviewService.createReview(reviewCreateRequest, token));
@@ -37,7 +37,7 @@ public class ReviewController {
 
     // review read(R)
     @Operation(summary = "레슨ID 하나로 리뷰들 조회")
-    @GetMapping("/{lessonId}")
+    @GetMapping("/reviews/lessons/{lessonId}")
     public ApiResponse<List<Review>> getReviewListByLessonId(@PathVariable Long lessonId) {
         return ApiResponse.success(reviewService.getReviewListByLessonId(lessonId));
     }
@@ -45,7 +45,7 @@ public class ReviewController {
 
     // review read(R)
     @Operation(summary = "회원ID 하나로 리뷰들 조회")
-    @GetMapping("/member")
+    @GetMapping("/review/member")
     public ApiResponse<List<Review>> getReviewListByMemberId(@RequestHeader("Authorization") String token) {
         return ApiResponse.success(reviewService.getReviewListByMemberId(token));
     }
@@ -53,8 +53,8 @@ public class ReviewController {
 
     // review update(U)
     @Operation(summary = "리뷰 수정")
-    @PutMapping("/{reviewId}")
-    public ApiResponse<Long> updateReview(@RequestBody ReviewUpdateRequest reviewUpdateRequest,
+    @PutMapping("/review/{reviewId}")
+    public ApiResponse<Long> updateReview(@Valid @RequestBody ReviewUpdateRequest reviewUpdateRequest,
                                           @PathVariable("reviewId") Long reviewId) {
         return ApiResponse.success(reviewService.updateReview(reviewUpdateRequest, reviewId));
     }
@@ -62,9 +62,8 @@ public class ReviewController {
 
     // review delete(D)
     @Operation(summary = "리뷰 삭제")
-    @DeleteMapping("/{lessonId}/{reviewId}")
-    public ApiResponse<ReviewDeleteResponse> deleteReview(@PathVariable("lessonId") Long lessonId,
-                                                          @PathVariable("reviewId") Long reviewId) {
-        return ApiResponse.success(reviewService.deleteReview(lessonId, reviewId));
+    @DeleteMapping("/review/{reviewId}")
+    public ApiResponse<ReviewDeleteResponse> deleteReview(@PathVariable("reviewId") Long reviewId) {
+        return ApiResponse.success(reviewService.deleteReview(reviewId));
     }
 }

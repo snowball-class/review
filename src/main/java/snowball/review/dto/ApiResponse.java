@@ -9,21 +9,21 @@ import org.springframework.http.HttpStatus;
 // HttpStatus status 필드의 값이 200(숫자)로 들어와서 역직렬화 오류
 
 public record ApiResponse<T>(
-        int status,
+        HttpStatus status,
         String message,
         T data
 
 ){
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(HttpStatus.OK.value(), null, data);
+        return new ApiResponse<>(HttpStatus.OK, null, data);
     }
 
     public static <T> ApiResponse<T> success() {
-        return new ApiResponse<>(HttpStatus.OK.value(), null, null);
+        return new ApiResponse<>(HttpStatus.OK, null, null);
     }
 
     public static <T> ApiResponse<T> error(String message){
-        return new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), message, null);
+        return new ApiResponse<>(HttpStatus.BAD_REQUEST, message, null);
     }
 
 //    // JSON 요청에서 숫자로 된 상태 코드도 변환할 수 있도록 설정, 설정 필요
